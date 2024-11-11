@@ -1,22 +1,20 @@
-// Dark/Light Mode Toggle
-const toggleThemeBtn = document.getElementById('toggle-theme');
+const sections = document.querySelectorAll('section');
+const navLinks = document.querySelectorAll('.nav-links a');
 
-toggleThemeBtn.addEventListener('click', () => {
-    // Toggle 'dark-mode' class on the body element
-    document.body.classList.toggle('dark-mode');
+window.addEventListener('scroll', () => {
+    let current = '';
     
-    // Toggle button text based on the mode
-    toggleThemeBtn.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
-    
-    // Save the preference in localStorage
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-});
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 60) {
+            current = section.getAttribute('id');
+        }
+    });
 
-// Check and apply the saved theme preference on load
-document.addEventListener('DOMContentLoaded', () => {
-    const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
-    if (darkModeEnabled) {
-        document.body.classList.add('dark-mode');
-        toggleThemeBtn.textContent = 'Light Mode';
-    }
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) {
+            link.classList.add('active');
+        }
+    });
 });
